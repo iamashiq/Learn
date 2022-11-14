@@ -1,3 +1,5 @@
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,31 +27,20 @@ public class InsertAction extends Action {
 		
 
 		String fullname = request.getParameter("fullname");
+		Integer dep_id = Integer.parseInt(request.getParameter("dep_id"));
 		String phone = request.getParameter("phone");
-		Integer age = Integer.parseInt( request.getParameter("age"));
-		//Integer gender =Integer.parseInt( request.getParameter("gender"));
-		Integer gender = 0;
-		if(request.getParameter("gender").equals("female"))
-		{
-			gender = 1;
-		}
-		else if(request.getParameter("gender").equals("male"))
-		{
-			gender = 2;
-		}
-		else
-		{
-			gender = 3;
+		String dob = request.getParameter("dob");
+		String email = request.getParameter("email");
+		String gender = request.getParameter("gender");
+		
+		
 			
-		}
-		Float cgpa = Float.parseFloat(request.getParameter("cgpa"));
-
 		System.out.println("Insert in action");
-		System.out.println(username+" ,"+password+" ,"+fullname+" ,"+phone+" ,"+age+" ,"+gender+" ,"+cgpa+" ,");
+		System.out.println(username+" ,"+password+" ,"+fullname+" ,"+dep_id+" ,"+email+" ,"+phone+" ,"+dob+","+gender);
 
 		boolean success = Db.getInstance().insertRecord(
 				new Login(-1,username,password,"admin")
-				, new Student(-1,fullname,phone,age,gender,cgpa));
+				, new Student(-1,dep_id,fullname,email,phone,dob,gender));
 		
 		if(success)
 		{

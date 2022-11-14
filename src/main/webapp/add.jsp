@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,36 +22,38 @@
 	<center>
 		<div class="add">
 			<form action="insert.do" method="POST">
-			
-				<label for="username">Username: </label>
-				<input type="text" id="username" name="username"><br> <br>
-				
-				<label for="password">Password: </label>
-				<input type="password" id="password" name="password"><br> <br>
-				
-				<hr/>
-				
-				<label for="fullname">Name: </label>
-				<input type="text" id="fullname" name="fullname"><br> <br>
-				
-				<label for="phone">Phone: </label>
-				<input type="number" id="phone" name="phone"><br> <br>
-				
-				<label for="age">Age: </label>
-				<input type="number" id="age" name="age"><br> <br>
-				
-				<label for="gender">Gender: </label>
-				<select name="gender" id="gender">
-				<option value="male">Male</option>
-				<option value="female">Female</option>
-				<option value="other">Other</option>
-				</select><br> <br>
-				
-				<label for="cgpa">CGPA: </label>
-				<input type="number" id="cgpa" name="cgpa"><br> <br>
-				
-				<input type="submit" value="Add">
 
+				<label for="username">Username: </label> <input type="text"
+					id="username" name="username"><br> <br> <label
+					for="password">Password: </label> <input type="password"
+					id="password" name="password"><br> <br>
+
+				<hr />
+
+				<label for="fullname">Name: </label> <input type="text"
+					id="fullname" name="fullname"
+					value="${fn:escapeXml(param.fullname)}"><br> <br>
+
+				<label for="phone">Phone: </label> <input type="number" id="phone"
+					name="phone"><br> <br> <label for="age">Age:
+				</label> <input type="number" id="age" name="age"><br> <br>
+
+				<label for="gender">Gender: </label> <select name="gender"
+					id="gender">
+					<option value="male">Male</option>
+					<option value="female">Female</option>
+					<option value="other">Other</option>
+				</select><br> <br> <label for="cgpa">CGPA: </label> <input
+					type="number" id="cgpa" name="cgpa"><br> <br> <input
+					type="submit" value="Add">
+
+
+
+				<br>
+
+<%-- 				<c:set var="c"><%= request.getContextPath()+"<hr/>" %></c:set>
+				value of var:"${fn:escapeXml(c)}" --%>
+				
 		</div>
 		</form>
 	</center>

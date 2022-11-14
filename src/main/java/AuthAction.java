@@ -34,7 +34,6 @@ public class AuthAction extends Action {
 		}
 		else
 		{
-
 			System.out.println("Login failed");
 			return mapping.findForward("failed");
 		}

@@ -1,8 +1,11 @@
-<%@page import="beans.Student"%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
+<%@page import="beans.Student"%>
+
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,10 +52,14 @@
 
 		<%
 		for (Student row : allUsers) {
+
+		    pageContext.setAttribute("row_id", row.getId());
+		    pageContext.setAttribute("row_name", row.getName());
+
 		%>
 		<tr>
-			<td><%=row.getId()%></td>
-			<td><%=row.getName()%></td>
+			<td><c:out value="${row_id}" /></td>
+			<td><c:out value="${row_name}" /></td>
 			<td>
 				<form action="/Learn/student.do" method="POST">
 					<input type="text" name="id" value="<%=row.getId()%>" hidden />

@@ -25,7 +25,7 @@ public class StudentAction extends Action {
 			if ((user = Db.getInstance().fetchStudent(id)) != null) {
 
 				System.out.println(id+" IDx");
-				System.out.println("\n " + user.getName() + " " + user.getCgpa());
+				System.out.println("\n " + user.getName() + " " + user.getPhone());
 				request.setAttribute("user", user);
 			}
 		}

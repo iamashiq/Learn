@@ -49,7 +49,7 @@ html, body {
 				<!-- Register buttons -->
 				<div class="text-center">
 					<p>
-						Not a member? <a href="register.do">Register</a>
+						Not a member? <a href="#!">Register</a>
 					</p>
 
 				</div>

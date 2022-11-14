@@ -1,20 +1,40 @@
 package beans;
 
 public class Student {
-	
+
 	Integer id;
+	Integer dep_id;
 	String name;
+	String email;
 	String phone;
-	Integer age;
-	Integer gender;
-	Float cgpa;
-	
+	String dob;
+	String gender;
+
+	public Student(Integer id, Integer dep_id, String name, String email, String phone, String dob, String gender) {
+		super();
+		this.id = id;
+		this.dep_id = dep_id;
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+		this.dob = dob;
+		this.gender = gender;
+	}
+
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getDep_id() {
+		return dep_id;
+	}
+
+	public void setDep_id(Integer dep_id) {
+		this.dep_id = dep_id;
 	}
 
 	public String getName() {
@@ -25,6 +45,14 @@ public class Student {
 		this.name = name;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getPhone() {
 		return phone;
 	}
@@ -33,40 +61,21 @@ public class Student {
 		this.phone = phone;
 	}
 
-	public Integer getAge() {
-		return age;
+	public String getDob() {
+		return dob;
 	}
 
-	public void setAge(Integer age) {
-		this.age = age;
+	public void setDob(String dob) {
+		this.dob = dob;
 	}
 
-	public Integer getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(Integer gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
-
-	public Float getCgpa() {
-		return cgpa;
-	}
-
-	public void setCgpa(Float cgpa) {
-		this.cgpa = cgpa;
-	}
-
-	public Student(Integer id, String name, String phone, Integer age, Integer gender, Float cgpa) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.phone = phone;
-		this.age = age;
-		this.gender = gender;
-		this.cgpa = cgpa;
-	}
-	
 	
 	
 	

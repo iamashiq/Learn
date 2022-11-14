@@ -68,7 +68,7 @@ public class Db {
 
 			ResultSet rs = preparedStatement.executeQuery();
 			if (rs.next()) {
-				return new Student(rs.getInt(1), rs.getString(2), rs.getString(3),rs.getInt(4), rs.getInt(5), rs.getFloat(6));
+				return new Student(rs.getInt(1), rs.getInt(2), rs.getString(3),rs.getString(4), rs.getString(5), rs.getString(6),rs.getString(7));
 			}
 
 
@@ -86,7 +86,7 @@ public class Db {
 
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
-				allUsers.add(new Student(rs.getInt(1), rs.getString(2), rs.getString(3),rs.getInt(4), rs.getInt(5), rs.getFloat(6)));
+				allUsers.add(new Student(rs.getInt(1), rs.getInt(2), rs.getString(3),rs.getString(4), rs.getString(5), rs.getString(6),rs.getString(7)));
 			}
 			return allUsers;
 
@@ -121,13 +121,14 @@ public class Db {
 			}
 			
 
-			preparedStatement = connection.prepareStatement("INSERT INTO student VALUES(?,?,?,?,?,?)");
+			preparedStatement = connection.prepareStatement("INSERT INTO student VALUES(?,?,?,?,?,?,?)");
 			preparedStatement.setInt(1, login.getId());
-			preparedStatement.setString(2, user.getName());
-			preparedStatement.setString(3, user.getPhone());
-			preparedStatement.setInt(4, user.getAge());
-			preparedStatement.setInt(5, user.getGender());
-			preparedStatement.setFloat(6, user.getCgpa());
+			preparedStatement.setInt(2, user.getDep_id());
+			preparedStatement.setString(3, user.getName());
+			preparedStatement.setString(4, user.getEmail());
+			preparedStatement.setString(5, user.getPhone());
+			preparedStatement.setString(6, user.getDob());
+			preparedStatement.setString(7, user.getGender());
 			
 			
 

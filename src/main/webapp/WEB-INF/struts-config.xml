@@ -10,6 +10,10 @@
         <action path="/login" type="LoginAction">
         <forward name="load" path="/login.jsp"></forward>
         </action>
+        
+        <action path="/register" type="RegisterAction">
+        <forward name="load" path="/register.jsp"></forward>
+        </action>
     	
     	
         <action path="/add" type="AddAction">
