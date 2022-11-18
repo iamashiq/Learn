@@ -38,11 +38,11 @@ public class InsertAction extends Action {
 		System.out.println("Insert in action");
 		System.out.println(username+" ,"+password+" ,"+fullname+" ,"+dep_id+" ,"+email+" ,"+phone+" ,"+dob+","+gender);
 
-		boolean success = Db.getInstance().insertRecord(
-				new Login(-1,username,password,"admin")
-				, new Student(-1,dep_id,fullname,email,phone,dob,gender));
+//		boolean success = Db.getInstance().insertRecord(
+//				new Login(-1,username,password,"admin")
+//				, new Student(-1,dep_id,fullname,email,phone,dob,gender));
 		
-		if(success)
+		if(false)
 		{
 			System.out.println("Insert success");
 			return mapping.findForward("complete");

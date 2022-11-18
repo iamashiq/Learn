@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Learn - Admin</title>
+<title>Learn - Teacher</title>
 <meta charset="UTF-8">
 
 <%@ page import="java.util.*"%>
@@ -30,22 +30,27 @@ html, body {
 <body>
 
 	<%
-	Admin admin;
 
-	try {
-		admin = (Admin) request.getAttribute("admin");
+		Teacher teacher;
 
-		pageContext.setAttribute("admin_id", admin.adminId());
-		pageContext.setAttribute("admin_name", admin.name());
-		pageContext.setAttribute("admin_email", admin.email());
-		pageContext.setAttribute("admin_phone", admin.phone());
-	} catch (Exception e) {
-		System.out.print(e.getMessage());
-	}
+		try {
+			teacher = (Teacher) request.getAttribute("teacher");
+
+			pageContext.setAttribute("teacher_id", teacher.teacherId());
+			pageContext.setAttribute("teacher_departmentId", teacher.department());
+			pageContext.setAttribute("teacher_name", teacher.name());
+			pageContext.setAttribute("teacher_email", teacher.email());
+			pageContext.setAttribute("teacher_phone", teacher.phone());
+			pageContext.setAttribute("teacher_joinDate", teacher.joinDate());
+			pageContext.setAttribute("teacher_gender", teacher.gender());
+			pageContext.setAttribute("teacher_qualification", teacher.qualification());
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
 	%>
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand" href="#">Learn Admin Portal</a>
+		<a class="navbar-brand" href="#">Learn Teacher Portal</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -57,11 +62,10 @@ html, body {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" href="admin.do">Home</a></li>
-				<li class="nav-item"><a class="nav-link" href="adduser.do">New User</a></li>
-				<li class="nav-item"><a class="nav-link" href="allocate.do">New Allocation</a></li>
-				<li class="nav-item"><a class="nav-link" href="addcourse.do">New Course</a></li>
-				<li class="nav-item"><a class="nav-link" href="addentity.do">New Entity</a></li>
+				<li class="nav-item active"><a class="nav-link" href="#">Home</a>
+				</li>
+				<li class="nav-item"><a class="nav-link" href="addmark.do">Marks<span
+						class="sr-only">(current)</span></a></li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
 			</ul>
@@ -73,8 +77,8 @@ html, body {
 
 				<div class="col">
 					<h4>
-						<c:out value="${admin_name}" />
-						<span class="badge badge-secondary">Admin</span>
+						<c:out value="${teacher_name}" />
+						<span class="badge badge-secondary">Teacher</span>
 					</h4>
 				</div>
 
@@ -102,16 +106,24 @@ html, body {
 						<tr>
 							<th scope="col">ID</th>
 							<th scope="col">Name</th>
+							<th scope="col">Department</th>
 							<th scope="col">Email</th>
 							<th scope="col">Phone</th>
+							<th scope="col">Join Date</th>
+							<th scope="col">Gender</th>
+							<th scope="col">Qualification</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<th scope="row"><c:out value="${admin_id}" /></th>
-							<td><c:out value="${admin_name}" /></td>
-							<td><c:out value="${admin_email}" /></td>
-							<td><c:out value="${admin_phone}" /></td>
+							<th scope="row"><c:out value="${teacher_id}" /></th>
+							<td><c:out value="${teacher_name}" /></td>
+							<td><c:out value="${teacher_departmentId}" /></td>
+							<td><c:out value="${teacher_email}" /></td>
+							<td><c:out value="${teacher_phone}" /></td>
+							<td><c:out value="${teacher_joinDate}" /></td>
+							<td><c:out value="${teacher_gender}" /></td>
+							<td><c:out value="${teacher_qualification}" /></td>
 						</tr>
 
 					</tbody>

@@ -28,13 +28,31 @@ public class AuthAction extends Action {
 			System.out.println("Logged in");
 
 			HttpSession session = request.getSession();
-			session.setAttribute("id", login.getId());
-			session.setAttribute("role", login.getRole());
-			return mapping.findForward(login.getRole());
+			session.setAttribute("id", login.id());
+			session.setAttribute("role", login.role());
+			
+			if(session.getAttribute("role").equals("1"))
+			{
+				return mapping.findForward("student");
+			}
+			else if(session.getAttribute("role").equals("2"))
+			{
+				return mapping.findForward("teacher");
+			}
+			else if(session.getAttribute("role").equals("3"))
+			{
+				return mapping.findForward("admin");
+			}
+			else
+			{
+				System.out.println("Login failed! Role error");
+				return mapping.findForward("failed");
+				
+			}
 		}
 		else
 		{
-			System.out.println("Login failed");
+			System.out.println("Login failed! No such user");
 			return mapping.findForward("failed");
 		}
 

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,32 +9,35 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import beans.Admin;
+import beans.StudentMark;
 import beans.Student;
 import beans.Teacher;
 
 
-public class AdminAction extends Action {
+public class TeacherAction extends Action {
 	
 
-	Admin admin;
-	String adminId;
+	Teacher teacher;
+	String teacherId;
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
 		
-		adminId =  request.getSession().getAttribute("id").toString();
+		teacherId =  request.getSession().getAttribute("id").toString();
 		
-		if((admin = Db.getInstance().fetchAdmin(Integer.parseInt(adminId))) != null)
+		if((teacher = Db.getInstance().fetchTeacher(Integer.parseInt(teacherId))) != null)
 		{
 
-			request.setAttribute("admin", admin);
+			request.setAttribute("teacher", teacher);
 		}
 
 		return mapping.findForward("load");
 
 	}
+	
+	
+	
 	
 }

@@ -20,6 +20,9 @@ public class LogoutAction extends Action {
 		HttpSession session = request.getSession();
 		session.setAttribute("id", null);
 		session.setAttribute("role", null);
+		session.setAttribute("student", null);
+		session.setAttribute("teacher", null);
+		
 		return mapping.findForward("complete");
 
 	}
