@@ -95,7 +95,7 @@ html, body {
 			</div>
 		</div>
 
-		<div class="row mt-5">
+		<div class="row">
 			<div class="col">
 				<table class="table">
 					<thead>
@@ -113,6 +113,116 @@ html, body {
 							<td><c:out value="${admin_email}" /></td>
 							<td><c:out value="${admin_phone}" /></td>
 						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	
+	
+	
+		<div class="row mt-5">
+			<div class="col">
+				<h3>
+					<span class="badge badge-secondary">Users</span>
+				</h3>
+			</div>
+		</div>
+	
+	
+		<div class="row">
+			<div class="col">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">Role</th>
+							<th scope="col">Details</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+							<%
+							try {
+								Map<Integer, String> students;
+								students = (Map<Integer, String>) request.getAttribute("students");
+
+								if (students.size() > 0) {
+
+									for (Map.Entry<Integer, String> stud : students.entrySet()) {
+
+								pageContext.setAttribute("stud_id", stud.getKey());
+								pageContext.setAttribute("stud_name", stud.getValue());
+							%>
+
+							<tr>
+								<td><c:out value="${stud_id}" /></td>
+								<td>Student</td>
+								<td><c:out value="${stud_name}" /></td>
+							<tr/>
+
+							<%
+							}
+
+							}
+							} catch (Exception e) {
+							System.out.print(e.getMessage());
+							}
+						
+							try {
+								Map<Integer, String> teachers;
+								teachers = (Map<Integer, String>) request.getAttribute("teachers");
+
+								if (teachers.size() > 0) {
+
+									for (Map.Entry<Integer, String> tcr : teachers.entrySet()) {
+
+								pageContext.setAttribute("tcr_id", tcr.getKey());
+								pageContext.setAttribute("tcr_name", tcr.getValue());
+							%>
+
+							<tr>
+								<td><c:out value="${tcr_id}" /></td>
+								<td>Teacher</td>
+								<td><c:out value="${tcr_name}" /></td>
+							<tr/>
+
+							<%
+							}
+
+							}
+							} catch (Exception e) {
+							System.out.print(e.getMessage());
+							}
+							
+							
+							try {
+								Map<Integer, String> admins;
+								admins = (Map<Integer, String>) request.getAttribute("admins");
+
+								if (admins.size() > 0) {
+
+									for (Map.Entry<Integer, String> adm : admins.entrySet()) {
+
+								pageContext.setAttribute("adm_id", adm.getKey());
+								pageContext.setAttribute("adm_name", adm.getValue());
+							%>
+
+							<tr>
+								<td><c:out value="${adm_id}" /></td>
+								<td>Admin</td>
+								<td><c:out value="${adm_name}" /></td>
+							<tr />
+
+							<%
+							}
+
+							}
+							} catch (Exception e) {
+							System.out.print(e.getMessage());
+							}
+							%>
+						
 
 					</tbody>
 				</table>

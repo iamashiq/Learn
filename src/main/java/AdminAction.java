@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,8 @@ public class AdminAction extends Action {
 
 	Admin admin;
 	String adminId;
+	
+	Map<Integer,String> teachers,students,admins;
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
@@ -28,9 +31,16 @@ public class AdminAction extends Action {
 		
 		if((admin = Db.getInstance().fetchAdmin(Integer.parseInt(adminId))) != null)
 		{
-
 			request.setAttribute("admin", admin);
 		}
+
+		students = Db.getInstance().fetchStudents();
+		teachers = Db.getInstance().fetchTeachers();
+		admins = Db.getInstance().fetchAdmins();
+		request.setAttribute("students", students);
+		request.setAttribute("teachers", teachers);
+		request.setAttribute("admins", admins);
+		
 
 		return mapping.findForward("load");
 

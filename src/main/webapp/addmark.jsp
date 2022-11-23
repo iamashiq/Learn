@@ -26,6 +26,19 @@ html, body {
 }
 </style>
 <script type="text/javascript">
+
+	function validate() {
+		var score = document.getElementById("score").value;
+
+		if (Number(score) > 100 || Number(score) < 0) {
+			alert("Score should be between than 0 and 100");
+			return false;
+		}
+
+		return true;
+
+	}
+
 	var selectedCourseId = 0;
 	var selectedClassId = 0;
 	var selectedStudentId = 0;
@@ -36,9 +49,8 @@ html, body {
 		selectedCourseId = temp[0];
 		selectedClassId = temp[1];
 
-
 		document.getElementById("courseId").value = selectedCourseId;
-		
+
 		document.getElementById("studentSelect").removeAttribute('disabled');
 
 		var xhttp = new XMLHttpRequest();
@@ -57,7 +69,8 @@ html, body {
 
 			}
 		};
-		xhttp.open("GET", "getStudentsByClassId.do?classId="+selectedClassId, true);
+		xhttp.open("GET", "getStudentsByClassId.do?classId=" + selectedClassId,
+				true);
 		xhttp.send();
 
 	}
@@ -66,10 +79,8 @@ html, body {
 
 		selectedStudentId = document.getElementById("studentSelect").value;
 		document.getElementById("studentId").value = selectedStudentId;
-		
-		document.getElementById("scoreInput").removeAttribute('disabled');
-		
-		
+
+		document.getElementById("score").removeAttribute('disabled');
 
 	}
 	function scoreEntered() {
@@ -124,12 +135,12 @@ html, body {
 						<option selected>Choose...</option>
 
 						<%
-						List<Allocation> allocations;
+						List<TeacherAllocation> allocations;
 
 						try {
-							allocations = (List<Allocation>) request.getAttribute("allocations");
+							allocations = (List<TeacherAllocation>) request.getAttribute("allocations");
 
-							for (Allocation allocation : allocations) {
+							for (TeacherAllocation allocation : allocations) {
 						%>
 
 						<option
@@ -166,44 +177,44 @@ html, body {
 				</div>
 			</div>
 		</div>
-		
-		
-		<form action="submitMark.do" method="POST">
-		
-		
-		<input type="text" id="studentId" name="studentId" hidden>
-		
-		
-		<input type="text" id="courseId" name="courseId" hidden>
-		
-		
 
-		<div class="row mt-5">
-			<div class="col">
-				<div class="input-group mb-3">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="basic-addon1">Score</span>
+
+		<form action="submitmark.do" method="POST"
+			onsubmit="return validate()">
+
+
+			<input type="text" id="studentId" name="studentId" hidden> <input
+				type="text" id="courseId" name="courseId" hidden>
+
+
+
+			<div class="row mt-5">
+				<div class="col">
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon1">Score</span>
+						</div>
+						<input type="number" class="form-control" placeholder="Score"
+							id="score" aria-label="score" name="score"
+							aria-describedby="basic-addon1" onchange="scoreEntered()"
+							disabled>
 					</div>
-					<input type="number" class="form-control" placeholder="Score"
-						id="scoreInput" aria-label="score" name="score"
-						aria-describedby="basic-addon1" onchange="scoreEntered()" disabled>
 				</div>
 			</div>
-		</div>
-		
-		
-		
-		<div class="row mt-5">
-			<div class="col">
-				<div class="input-group mb-3">
-					<input type="submit" class="form-control" id="submitButton"
-						aria-label="score" aria-describedby="basic-addon1" disabled>
+
+
+
+			<div class="row mt-5">
+				<div class="col">
+					<div class="input-group mb-3">
+						<input type="submit" class="form-control" id="submitButton"
+							aria-label="score" aria-describedby="basic-addon1" disabled>
+					</div>
 				</div>
 			</div>
-		</div>
-		
+
 		</form>
-		
+
 
 	</div>
 

@@ -10,7 +10,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import beans.Allocation;
+import beans.TeacherAllocation;
 import beans.StudentMark;
 import beans.Student;
 import beans.Teacher;

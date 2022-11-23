@@ -26,6 +26,44 @@ html, body {
 }
 </style>
 
+<script type="text/javascript">
+function teacherSelected()
+{
+	
+	var temp = document.getElementById("teacherSelect").value.split(",");
+	selectedTeacherId = temp[0];
+	selectedDepartmentId = temp[1];
+	
+
+	document.getElementById("teacherId").value = selectedTeacherId;
+	
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			
+			var courses = JSON.parse(this.responseText);
+
+			var courseSelect = document.getElementById("courseSelect");
+			
+			courseSelect.innerHTML = "";
+			
+			for ( var key in courses) {
+
+				var opt = document.createElement('option');
+				opt.value = key;
+				opt.innerHTML = courses[key];
+				courseSelect.appendChild(opt);
+			}
+
+		}
+	};
+	xhttp.open("GET", "getCoursesByDepartmentId.do?departmentId="+selectedDepartmentId, true);
+	xhttp.send();
+	
+}
+</script>
+
 </head>
 <body>
 
@@ -43,11 +81,11 @@ html, body {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" href="admin.do">Home</a></li>
-				<li class="nav-item"><a class="nav-link" href="adduser.do">Add
-						user</a></li>
-				<li class="nav-item"><a class="nav-link" href="allocate.do">Allocate
-						course</a></li>
+				<li class="nav-item"><a class="nav-link" href="admin.do">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="adduser.do">New User</a></li>
+				<li class="nav-item active"><a class="nav-link" href="allocate.do">New Allocation</a></li>
+				<li class="nav-item"><a class="nav-link" href="addcourse.do">New Course</a></li>
+				<li class="nav-item"><a class="nav-link" href="addentity.do">New Entity</a></li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
 			</ul>
@@ -73,7 +111,7 @@ html, body {
 					<span class="badge badge-secondary">Existing Allocations</span>
 				</h3>
 			</div>
-		</div>
+			</div>
 
 
 
@@ -83,6 +121,15 @@ html, body {
 					<thead>
 						<tr>
 							<th scope="col">ID</th>
+							<th scope="col" colspan="2">Teacher</th>
+							<th scope="col" colspan="2">Course</th>
+						</tr>
+					</thead>
+					<thead>
+						<tr>
+							<th scope="col"></th>
+							<th scope="col">Name</th>
+							<th scope="col">Department</th>
 							<th scope="col">Class</th>
 							<th scope="col">Subject</th>
 						</tr>
@@ -91,6 +138,7 @@ html, body {
 					
 					
 						<%
+											
 						try {
 							List<Allocation> allocations;
 							allocations = (List<Allocation>) request.getAttribute("allocations");
@@ -101,11 +149,16 @@ html, body {
 							for (Allocation alloc : allocations) {
 
 								pageContext.setAttribute("alloc_id", alloc.allocId());
+								pageContext.setAttribute("alloc_teacher", alloc.teahcherName());
+								pageContext.setAttribute("alloc_dept", alloc.departmentName());
 								pageContext.setAttribute("alloc_class", alloc.className());
 								pageContext.setAttribute("alloc_subject", alloc.subjectName());
 						%>
+																					
 						<tr>
 							<td><c:out value="${alloc_id}" /></td>
+							<td><c:out value="${alloc_teacher}" /></td>
+							<td><c:out value="${alloc_dept}" /></td>
 							<td><c:out value="${alloc_class}" /></td>
 							<td><c:out value="${alloc_subject}" /></td>
 						<tr />
@@ -140,18 +193,18 @@ html, body {
 					<div class="input-group-prepend">
 					<label class="input-group-text" for="teacherSelect">Teacher</label>
 					</div>
-					<select class="custom-select" id="teacherSelect" name="teacherId">
+					<select class="custom-select" id="teacherSelect" name="teacherSelect" onchange="teacherSelected()">
 						<option selected>Choose...</option>
 						
 						<%
 						try
 						{
-						Map<Integer, String> teachers = (Map<Integer, String>) request.getAttribute("teachers");
+						Map<String, String> teachers = (Map<String, String>) request.getAttribute("teachers");
 
 						if (teachers.size() > 0)
 						{
 
-							for (Map.Entry<Integer, String> t : teachers.entrySet()) 
+							for (Map.Entry<String, String> t : teachers.entrySet()) 
 							{
 							pageContext.setAttribute("row_tid", t.getKey());
 							pageContext.setAttribute("row_tname", t.getValue());
@@ -181,45 +234,21 @@ html, body {
 					</div>
 					<select class="custom-select" id="courseSelect" name="courseId">
 						<option selected>Choose...</option>
-						
-					<%
-						try
-						{
-						Map<Integer, String> courses = (Map<Integer, String>) request.getAttribute("courses");
-
-						if (courses.size() > 0)
-						{
-
-							for (Map.Entry<Integer, String> t : courses.entrySet()) 
-							{
-							pageContext.setAttribute("row_crid", t.getKey());
-							pageContext.setAttribute("row_crname", t.getValue());
-						%>
-
-						<option value="<c:out value="${row_crid}" />"><c:out value="${row_crname}" />
-						</option>
-
-
-						<%
-							}
-
-						}
-						} catch (Exception e) {
-						System.out.print(e.getMessage());
-						}
-						%>	
 					</select>
 				</div>
 			
 			</div>
 		</div>
 		
+		
+		<input type="text" id="teacherId" name="teacherId" hidden>
+		
 		<div class="row">
 			<div class="col">
 			</div>
 			<div class="col">
 			
-				<div class="input-group mb-3">
+				<div class="input-group mb-5 mt-3">
 					<input type="submit" class="form-control btn btn-secondary" id="submitButton"
 						aria-label="score" aria-describedby="basic-addon1">
 				</div>

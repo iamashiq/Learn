@@ -14,8 +14,7 @@ public class AddCourseAction extends Action {
 	
 
 
-	Map<Integer,String> classes;
-	Map<Integer,String> subjects;
+	Map<Integer,String> classes,subjects,courses;
 	
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
@@ -23,8 +22,11 @@ public class AddCourseAction extends Action {
 
 		classes = Db.getInstance().fetchClasses();
 		subjects = Db.getInstance().fetchSubjects();
+		courses = Db.getInstance().fetchCourses();
+		
 		request.setAttribute("classes", classes);
 		request.setAttribute("subjects", subjects);
+		request.setAttribute("courses", courses);
 
 		return mapping.findForward("load");
 

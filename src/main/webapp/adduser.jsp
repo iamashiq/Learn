@@ -26,7 +26,44 @@ html, body {
 }
 </style>
 
+
 <script>
+
+	function validate()
+	{
+		var username = document.getElementById("username").value;
+		var fullname = document.getElementById("fullname").value;
+		var email = document.getElementById("email").value;
+		var phone = document.getElementById("phone").value;
+		
+		if(! /^[A-Za-z\s]+$/.test(username))
+		{
+			alert("Username should contain only characters ");
+			return false; 
+		}
+		else if((! /^[A-Za-z\s]+$/.test(fullname)))
+		{
+			alert("Name should contain only characters ");
+			return false; 
+		}
+		else if(! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+		{
+			alert("Email format is not valid");
+			return false; 
+		}
+		else if(! /^\d+$/.test(phone) && phone.length <=10)
+		{
+			alert("Phone number format is not valid");
+			return false; 
+		}
+		
+		
+		
+		return true;
+		
+	}
+	
+
 	function roleChanged() {
 
 		var role = document.getElementById("role").value;
@@ -81,10 +118,13 @@ html, body {
 
 		roleChanged();
 	}
+	
+	
 </script>
 
-<body>
 
+
+<body>
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="#">Learn Admin Portal</a>
@@ -100,10 +140,14 @@ html, body {
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item"><a class="nav-link" href="admin.do">Home</a></li>
-				<li class="nav-item active"><a class="nav-link" href="adduser.do">New User</a></li>
-				<li class="nav-item"><a class="nav-link" href="allocate.do">New Allocation</a></li>
-				<li class="nav-item"><a class="nav-link" href="addcourse.do">New Course</a></li>
-				<li class="nav-item"><a class="nav-link" href="addentity.do">New Entity</a></li>
+				<li class="nav-item active"><a class="nav-link"
+					href="adduser.do">New User</a></li>
+				<li class="nav-item"><a class="nav-link" href="allocate.do">New
+						Allocation</a></li>
+				<li class="nav-item"><a class="nav-link" href="addcourse.do">New
+						Course</a></li>
+				<li class="nav-item"><a class="nav-link" href="addentity.do">New
+						Entity</a></li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
 			</ul>
@@ -116,195 +160,206 @@ html, body {
 		</div>
 	</nav>
 
+	<div class="container">
 
 
 
-	<div class="h-100 d-flex align-items-center justify-content-center">
-		<div class="form-group w-25">
-			<form action="submituser.do" method="POST">
+		<div class="h-100 row align-items-center justify-content-center mt-5">
+			<div class="form-group w-25">
+				<form action="submituser.do" method="POST" onsubmit="return validate()">
 
-				<!-- username input -->
+					<!-- username input -->
 
-				<div class="input-group mb-4">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="username">Username</span>
+					<div class="mb-3">
+						<h3>
+							<span class="badge badge-secondary">Create New User</span>
+						</h3>
 					</div>
-					<input type="text" class="form-control" id="username"
-						aria-label="username" name="username" aria-describedby="username">
-				</div>
 
-				<!-- Password input -->
-				<div class="input-group mb-4">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="password">Password</span>
+					<div class="input-group mb-4">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="usernamelabel">Username</span>
+						</div>
+						<input type="text" class="form-control" id="username"
+							aria-label="username" name="username" aria-describedby="username" required>
 					</div>
-					<input type="password" class="form-control" id="password"
-						aria-label="password" name="password" aria-describedby="password">
-				</div>
 
-				<!-- Role input -->
-				<div class="input-group mb-3">
-					<div class="input-group-prepend">
-						<label class="input-group-text" for="role">Role</label>
+					<!-- Password input -->
+					<div class="input-group mb-4">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="passwordlabel">Password</span>
+						</div>
+						<input type="password" class="form-control" id="password"
+							aria-label="password" name="password" aria-describedby="password" required>
 					</div>
-					<select class="custom-select" id="role" name="role"
-						onchange="roleChanged()">
-						<option value="1">Student</option>
-						<option value="2">Teacher</option>
-						<option value="3">Admin</option>
-					</select>
-				</div>
 
-				<hr />
-
-
-				<!-- fullname input -->
-				<div class="input-group mb-4">
-					<div class="input-group-prepend">
-						<span class="input-group-text">Name</span>
+					<!-- Role input -->
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="role">Role</label>
+						</div>
+						<select class="custom-select" id="role" name="role"
+							onchange="roleChanged()">
+							<option value="1">Student</option>
+							<option value="2">Teacher</option>
+							<option value="3">Admin</option>
+						</select>
 					</div>
-					<input type="text" class="form-control" id="fullname"
-						aria-label="fullname" name="fullname" aria-describedby="fullname">
-				</div>
 
-				<!-- Class input -->
-				<div class="input-group mb-4" id="classDiv">
-					<div class="input-group-prepend">
-						<label class="input-group-text" for="classId">Class</label>
+					<hr />
+
+
+					<!-- fullname input -->
+					<div class="input-group mb-4">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Name</span>
+						</div>
+						<input type="text" class="form-control" id="fullname"
+							aria-label="fullname" name="fullname" aria-describedby="fullname" required>
 					</div>
-					<select class="custom-select" id="classId" name="classId">
 
-						<%
-						try {
-							Map<Integer, String> classes = (Map<Integer, String>) request.getAttribute("classes");
+					<!-- Class input -->
+					<div class="input-group mb-4" id="classDiv">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="classId">Class</label>
+						</div>
+						<select class="custom-select" id="classId" name="classId">
 
-							if (classes.size() > 0) {
+							<%
+							try {
+								Map<Integer, String> classes = (Map<Integer, String>) request.getAttribute("classes");
 
-								for (Map.Entry<Integer, String> d : classes.entrySet()) {
-							pageContext.setAttribute("row_cid", d.getKey());
-							pageContext.setAttribute("row_cname", d.getValue());
-						%>
+								if (classes.size() > 0) {
 
-						<option value="<c:out value="${row_cid}" />"><c:out
-								value="${row_cname}" />
-						</option>
+									for (Map.Entry<Integer, String> d : classes.entrySet()) {
+								pageContext.setAttribute("row_cid", d.getKey());
+								pageContext.setAttribute("row_cname", d.getValue());
+							%>
 
-
-						<%
-						}
-
-						}
-						} catch (Exception e) {
-						System.out.print(e.getMessage());
-						}
-						%>
-
-					</select>
-				</div>
+							<option value="<c:out value="${row_cid}" />"><c:out
+									value="${row_cname}" />
+							</option>
 
 
-				<!-- departmet input -->
-				<div class="input-group mb-4" id="departmentDiv">
-					<div class="input-group-prepend">
-						<label class="input-group-text" for="departmentId">Department</label>
+							<%
+							}
+
+							}
+							} catch (Exception e) {
+							System.out.print(e.getMessage());
+							}
+							%>
+
+						</select>
 					</div>
-					<select class="custom-select" id="departmentId" name="departmentId">
-
-						<%
-						try {
-							Map<Integer, String> departments = (Map<Integer, String>) request.getAttribute("departments");
-
-							if (departments.size() > 0) {
-
-								for (Map.Entry<Integer, String> d : departments.entrySet()) {
-							pageContext.setAttribute("row_did", d.getKey());
-							pageContext.setAttribute("row_dname", d.getValue());
-							System.out.println(d.getKey() + " X");
-						%>
-
-						<option value="<c:out value="${row_did}" />"><c:out
-								value="${row_dname}" />
-						</option>
 
 
-						<%
-						}
+					<!-- departmet input -->
+					<div class="input-group mb-4" id="departmentDiv">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="departmentId">Department</label>
+						</div>
+						<select class="custom-select" id="departmentId"
+							name="departmentId" required>
 
-						}
-						} catch (Exception e) {
-						System.out.print(e.getMessage());
-						}
-						%>
+							<%
+							try {
+								Map<Integer, String> departments = (Map<Integer, String>) request.getAttribute("departments");
+
+								if (departments.size() > 0) {
+
+									for (Map.Entry<Integer, String> d : departments.entrySet()) {
+								pageContext.setAttribute("row_did", d.getKey());
+								pageContext.setAttribute("row_dname", d.getValue());
+								System.out.println(d.getKey() + " X");
+							%>
+
+							<option value="<c:out value="${row_did}" />"><c:out
+									value="${row_dname}" />
+							</option>
 
 
-					</select>
-				</div>
+							<%
+							}
+
+							}
+							} catch (Exception e) {
+							System.out.print(e.getMessage());
+							}
+							%>
 
 
-
-				<!-- email input -->
-				<div class="input-group mb-4">
-					<div class="input-group-prepend">
-						<span class="input-group-text">Email</span>
+						</select>
 					</div>
-					<input type="mail" class="form-control" id="email"
-						aria-label="email" name="email" aria-describedby="email">
-				</div>
-				
-				
-				<!-- phone input -->
-				<div class="input-group mb-4">
-					<div class="input-group-prepend">
-						<span class="input-group-text">Phone</span>
-					</div>
-					<input type="mail" class="form-control" id="phone"
-						aria-label="phone" name="phone" aria-describedby="phone">
-				</div>
 
-				<!-- dob input -->
-				<div class="input-group mb-4" id="dobDiv">
-					<div class="input-group-prepend">
-						<span class="input-group-text">Date of Birth</span>
-					</div>
-					<input type="date" class="form-control" id="dob"
-						aria-label="dob" name="dob" aria-describedby="dob">
-				</div>
 
-				<!-- joindate input -->
-				<div class="input-group mb-4" id="joindateDiv">
-					<div class="input-group-prepend">
-						<span class="input-group-text">Join Date</span>
-					</div>
-					<input type="date" class="form-control" id="joindate"
-						aria-label="joindate" name="joindate" aria-describedby="joindate">
-				</div>
 
-				<!-- qualification input -->
-				<div class="input-group mb-4" id="qualificationDiv">
-					<div class="input-group-prepend">
-						<span class="input-group-text">Qualification</span>
+					<!-- email input -->
+					<div class="input-group mb-4">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Email</span>
+						</div>
+						<input type="mail" class="form-control" id="email"
+							aria-label="email" name="email" aria-describedby="email">
 					</div>
-					<input type="text" class="form-control" id="qualification"
-						aria-label="qualification" name="qualification" aria-describedby="qualification">
-				</div>
 
-				<!-- gender input -->
-				<div class="input-group mb-4" id="genderDiv">
-					<div class="input-group-prepend">
-						<label class="input-group-text" for="gender">Gender</label>
+
+					<!-- phone input -->
+					<div class="input-group mb-4">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Phone</span>
+						</div>
+						<input type="mail" class="form-control" id="phone"
+							aria-label="phone" name="phone" aria-describedby="phone" required>
 					</div>
-					<select class="custom-select" id="gender" name="gender">
-						<option value="MALE">Male</option>
-						<option value="FEMALE">Female</option>
-						<option value="OTHER">Other</option>
-					</select>
-				</div>
 
-				<!-- Submit button -->
-				<button type="submit" id="submitButton"
-					class="btn btn-info btn-block mt-4">Add User</button>
-			</form>
+					<!-- dob input -->
+					<div class="input-group mb-4" id="dobDiv">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Date of Birth</span>
+						</div>
+						<input type="date" class="form-control" id="dob" aria-label="dob"
+							name="dob" aria-describedby="dob">
+					</div>
+
+					<!-- joindate input -->
+					<div class="input-group mb-4" id="joindateDiv">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Join Date</span>
+						</div>
+						<input type="date" class="form-control" id="joindate"
+							aria-label="joindate" name="joindate" aria-describedby="joindate">
+					</div>
+
+					<!-- qualification input -->
+					<div class="input-group mb-4" id="qualificationDiv">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Qualification</span>
+						</div>
+						<input type="text" class="form-control" id="qualification"
+							aria-label="qualification" name="qualification"
+							aria-describedby="qualification">
+					</div>
+
+					<!-- gender input -->
+					<div class="input-group mb-4" id="genderDiv">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="gender">Gender</label>
+						</div>
+						<select class="custom-select" id="gender" name="gender">
+							<option value="MALE">Male</option>
+							<option value="FEMALE">Female</option>
+							<option value="OTHER">Other</option>
+						</select>
+					</div>
+
+					<!-- Submit button -->
+					<button type="submit" id="submitButton"
+						class="btn btn-info btn-block mt-4">Add User</button>
+				</form>
+			</div>
 		</div>
+
 	</div>
 
 

@@ -15,6 +15,7 @@ public class SubmitUserAction extends Action {
 
 	String username, password, fullname, email, phone,dob,gender,joindate,qualification = "";
 	Integer roleId,loginId,classId,departmentId = 0;
+	Status result;
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
@@ -42,42 +43,94 @@ public class SubmitUserAction extends Action {
 		System.out.println(roleId+" "+username+" "+password+" "+fullname+" "+email+" "+phone);
 		
 		
+		//Validations
+		Status validationStatus;
+		if(! ( validationStatus = ServerValidation.getInstance().vaildateMail(email)).status())
+		{
+			request.setAttribute("error_message", validationStatus.message());
+			return mapping.findForward("failed");
+			
+		}
+		else if(! ( validationStatus = ServerValidation.getInstance().vaildatePhone(phone)).status())
+		{
+			request.setAttribute("error_message", validationStatus.message());
+			return mapping.findForward("failed");
+			
+		}
+		else if(! ( validationStatus = ServerValidation.getInstance().vaildateCleanText(username)).status())
+		{
+			request.setAttribute("error_message", validationStatus.message());
+			return mapping.findForward("failed");
+			
+		} 
+		else if(! ( validationStatus = ServerValidation.getInstance().vaildatePassword(password)).status())
+		{
+			request.setAttribute("error_message", validationStatus.message());
+			return mapping.findForward("failed");
+			
+		}
+		if(roleId == 1)
+		{
+			if (! ( validationStatus = ServerValidation.getInstance().isBeforeToday(dob)).status())
+			{
+				request.setAttribute("error_message", validationStatus.message());
+				return mapping.findForward("failed");
+				
+			}
+			
+		}
+		if(roleId == 2)
+		{
+			if (! ( validationStatus = ServerValidation.getInstance().isBeforeToday(joindate)).status())
+			{
+				request.setAttribute("error_message", validationStatus.message());
+				return mapping.findForward("failed");
+				
+			}
+			
+		}
+		
+		
+		
+		
+		
 		//Add Login
 		
-		loginId = Db.getInstance().insertLogin(new Login(-12,username,password,roleId+""));
+		loginId = Db.getInstance().insertLogin(new Login(-12,username,password,roleId,phone,email));
 		if(loginId>-1)
 		{
 			//Add Admin
 			if(roleId == 3)
 			{
 				System.out.println("User added Id = "+loginId);
-				if(Db.getInstance().insertAdmin(new Admin(loginId,fullname,email,phone)))
-				{
-					System.out.println("Success Admin Print");
-					return mapping.findForward("success");
-				}
+				result  = Db.getInstance().insertAdmin(new Admin(loginId,fullname,email,phone));
+				
 			}
 			//Add Student
 			else if(roleId == 1)
 			{
 				System.out.println("User added for student Id = "+loginId);
-				if(Db.getInstance().insertStudent(new Student(loginId,classId,fullname,email,phone,dob,gender,"","")))
-				{
-					System.out.println("Success Student Print");
-					return mapping.findForward("success");
-				}
+				result  = Db.getInstance().insertStudent(new Student(loginId,classId,fullname,email,phone,dob,gender,"",""));
 				
 			}
 			//Add Teacher
 			else if(roleId == 2)
 			{
 				System.out.println("User added for teahcer Id = "+loginId);
-				if(Db.getInstance().insertTeacher(new Teacher(loginId,departmentId,fullname,email,phone,joindate,gender,qualification,"")))
-				{
-					System.out.println("Success Teacher Print");
-					return mapping.findForward("success");
-				}
+				result = Db.getInstance().insertTeacher(new Teacher(loginId,departmentId,fullname,email,phone,joindate,gender,qualification,""));
 				
+			}
+			
+			if(result.status())
+			{
+				System.out.println("Success Admin Print");
+				return mapping.findForward("success");
+			}
+			else
+			{
+				System.out.println("Error Print "+result.message());
+				request.setAttribute("error_message", result.message());
+				return mapping.findForward("failed");
 			}
 			
 		}

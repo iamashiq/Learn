@@ -16,6 +16,8 @@ public class ErrorAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
+		System.out.println(request.getAttribute("error_message")+" error handler");
+		
 		return mapping.findForward("load");
 
 	}

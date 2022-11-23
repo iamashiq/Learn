@@ -9,7 +9,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import beans.Allocation;
+import beans.TeacherAllocation;
 import beans.StudentMark;
 import beans.Student;
 import beans.Teacher;
@@ -18,7 +18,7 @@ import beans.Teacher;
 public class AddMarkAction extends Action {
 	
 
-	List<Allocation> allocations;
+	List<TeacherAllocation> allocations;
 	String teacherId;
 
 	@Override

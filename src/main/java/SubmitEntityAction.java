@@ -35,12 +35,21 @@ public class SubmitEntityAction extends Action {
 
 		System.out.println( "Recieved " + entity );
 
-		if (Db.getInstance().insertEntity(entity, name,departmentId,total)) {
-			System.out.println("Success Entity Print");
+		
+		Status result = Db.getInstance().insertEntity(entity, name,departmentId,total);
+
+		if (result.status()) {
+			System.out.println("Success Print");
 			return mapping.findForward("success");
 		}
+		else
+		{
+			System.out.println("Error Print "+result.message());
+			request.setAttribute("error_message", result.message());
+			return mapping.findForward("failed");
+			
+		}
 
-		return mapping.findForward("failed");
 
 	}
 

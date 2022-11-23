@@ -10,6 +10,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import beans.Allocation;
+import beans.TeacherAllocation;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,7 +18,7 @@ public class AllocateAction extends Action {
 	
 
 
-	Map<Integer,String> teachers;
+	Map<String,String> teachers;
 	Map<Integer,String> courses;
 	List<Allocation> allocations;
 	
@@ -26,17 +27,12 @@ public class AllocateAction extends Action {
 			HttpServletResponse response) throws Exception {
 
 		
-		teachers = Db.getInstance().fetchTeachers();
+		teachers = Db.getInstance().fetchTeachersWithDepartmentId();
 		courses = Db.getInstance().fetchCourses();
-		allocations = Db.getInstance().fetachAllocations(-1);
+		allocations = Db.getInstance().fetachAllAllocations();
 		request.setAttribute("courses", courses);
 		request.setAttribute("teachers", teachers);
 		request.setAttribute("allocations", allocations);
-		
-		for(Allocation a : allocations)
-		{
-			System.out.println(a.className()+" "+a.subjectName());
-		}
 
 		return mapping.findForward("load");
 

@@ -1,4 +1,3 @@
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,6 +10,8 @@ import java.util.Map;
 
 import beans.Admin;
 import beans.Allocation;
+import beans.Status;
+import beans.TeacherAllocation;
 import beans.Login;
 import beans.StudentMark;
 import beans.Student;
@@ -19,7 +20,7 @@ import beans.TeacherMark;
 
 public class Db {
 
-	public static Db instance;
+	private static Db instance;
 
 	String url = "jdbc:mysql://localhost:3306/test";
 	String dbusername = "root";
@@ -55,7 +56,7 @@ public class Db {
 
 			ResultSet rs = preparedStatement.executeQuery();
 			if (rs.next()) {
-				return new Login(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+				return new Login(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4),rs.getString(5),rs.getString(6));
 			}
 
 			return null;
@@ -125,9 +126,9 @@ public class Db {
 		}
 	}
 
-	public List<Allocation> fetachAllocations(Integer teacherId) {
+	public List<TeacherAllocation> fetachAllocations(Integer teacherId) {
 
-		List<Allocation> allocations = new ArrayList<>();
+		List<TeacherAllocation> allocations = new ArrayList<>();
 		PreparedStatement preparedStatement;
 
 		try {
@@ -140,7 +141,7 @@ public class Db {
 
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
-				allocations.add(new Allocation(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5),
+				allocations.add(new TeacherAllocation(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5),
 						rs.getString(6)));
 			}
 			return allocations;
@@ -169,7 +170,7 @@ public class Db {
 		}
 	}
 
-	public boolean insertMark(TeacherMark mark) {
+	public Status insertMark(TeacherMark mark) {
 		try {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement("INSERT INTO mark(student_id,course_id,score) VALUES(?,?,?)");
@@ -179,15 +180,17 @@ public class Db {
 
 			System.out.println(preparedStatement.toString());
 
-			if (preparedStatement.executeUpdate() != 1) {
-				return false;
-			} else {
-				return true;
+			if (preparedStatement.executeUpdate() == 1) {
+				return new Status(true, "");
+			}
+			else
+			{
+				return new Status(false, "Something went wrong");
 			}
 
 		} catch (Exception e) {
 			System.out.println("\n" + e.getMessage());
-			return false;
+			return new Status(false, e.getMessage());
 		}
 	}
 
@@ -247,11 +250,13 @@ public class Db {
 		try {
 			Integer loginId = -1;
 			PreparedStatement preparedStatement = connection
-					.prepareStatement("INSERT INTO login(username,password,role_id) VALUES(?,?,?)");
+					.prepareStatement("INSERT INTO login(username,password,role_id,phone,email) VALUES(?,?,?,?,?)");
 
 			preparedStatement.setString(1, login.username());
 			preparedStatement.setString(2, login.password());
-			preparedStatement.setInt(3, Integer.parseInt(login.role()));
+			preparedStatement.setInt(3, login.roleId());
+			preparedStatement.setString(4, login.phone());
+			preparedStatement.setString(5, login.email());
 
 			System.out.println(preparedStatement.toString());
 
@@ -276,7 +281,7 @@ public class Db {
 		return -1;
 	}
 
-	public boolean insertAdmin(Admin admin) {
+	public Status insertAdmin(Admin admin) {
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO admin VALUES(?,?,?,?)");
 
@@ -287,16 +292,32 @@ public class Db {
 			System.out.println(preparedStatement.toString());
 
 			if (preparedStatement.executeUpdate() > 0) {
-				return true;
+				return new Status(true, "");
+			}
+			else
+			{
+				throw new SQLException();
 			}
 
 		} catch (Exception e) {
+			
+			try {
+				PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM login WHERE user_id  = ?;");
+				preparedStatement.setInt(1, admin.adminId());
+				
+				preparedStatement.executeUpdate();
+				
+			} catch (SQLException e1) {
+				System.out.println("\n rollback login : " + e.getMessage());
+				e1.printStackTrace();
+			}
+			
 			System.out.println("\n" + e.getMessage());
+			return new Status(false, e.getMessage());
 		}
-		return false;
 	}
 
-	public boolean insertStudent(Student student) {
+	public Status insertStudent(Student student) {
 		try {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement("INSERT INTO student VALUES(?,?,?,?,?,?,?)");
@@ -310,17 +331,35 @@ public class Db {
 			preparedStatement.setString(7, student.gender());
 			System.out.println(preparedStatement.toString());
 
+
 			if (preparedStatement.executeUpdate() > 0) {
-				return true;
+				return new Status(true, "");
+			}
+			else
+			{
+				throw new SQLException();
 			}
 
 		} catch (Exception e) {
+			
+
+			try {
+				PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM login WHERE user_id  = ?;");
+				preparedStatement.setInt(1, student.studentId());
+				
+				preparedStatement.executeUpdate();
+				
+			} catch (SQLException e1) {
+				System.out.println("\n rollback login : " + e.getMessage());
+				e1.printStackTrace();
+			}
+			
 			System.out.println("\n" + e.getMessage());
+			return new Status(false, e.getMessage());
 		}
-		return false;
 	}
 
-	public boolean insertTeacher(Teacher teacher) {
+	public Status insertTeacher(Teacher teacher) {
 		try {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement("INSERT INTO teacher VALUES(?,?,?,?,?,?,?,?)");
@@ -335,14 +374,31 @@ public class Db {
 			preparedStatement.setString(8, teacher.qualification());
 			System.out.println(preparedStatement.toString());
 
+
 			if (preparedStatement.executeUpdate() > 0) {
-				return true;
+				return new Status(true, "");
+			}
+			else
+			{
+				throw new SQLException();
 			}
 
 		} catch (Exception e) {
+			
+			try {
+				PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM login WHERE user_id  = ?;");
+				preparedStatement.setInt(1, teacher.teacherId());
+				
+				preparedStatement.executeUpdate();
+				
+			} catch (SQLException e1) {
+				System.out.println("\n rollback login : " + e.getMessage());
+				e1.printStackTrace();
+			}
+			
 			System.out.println("\n" + e.getMessage());
+			return new Status(false, e.getMessage());
 		}
-		return false;
 	}
 
 	public Map<Integer, String> fetchTeachers() {
@@ -357,6 +413,61 @@ public class Db {
 				teachers.put(rs.getInt(1), rs.getString(2) + " - " + rs.getString(3));
 			}
 			return teachers;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	//For Allocation based of dep_id
+	public Map<String, String> fetchTeachersWithDepartmentId() {
+		try {
+			Map<String, String> teachers = new HashMap<>();
+			// if(all)
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"SELECT teacher.teacher_id,department.dep_id,teacher.name,department.dep_name FROM teacher INNER JOIN department ON department.dep_id = teacher.dep_id;");
+
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				teachers.put(rs.getInt(1)+","+rs.getInt(2), rs.getString(3) + " - " + rs.getString(4));
+			}
+			return teachers;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public Map<Integer, String> fetchStudents() {
+		try {
+			Map<Integer, String> students = new HashMap<>();
+			// if(all)
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"SELECT student.student_id,student.name,class.class_name,department.dep_name FROM student INNER JOIN class ON class.class_id = student.class_id  INNER JOIN department ON department.dep_id = class.dep_id;");
+
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				students.put(rs.getInt(1), rs.getString(2) + " - " + rs.getString(3)+" - "+rs.getString(4));
+			}
+			return students;
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public Map<Integer, String> fetchAdmins() {
+		try {
+			Map<Integer, String> admins = new HashMap<>();
+			// if(all)
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"SELECT admin_id,name FROM admin;");
+
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				admins.put(rs.getInt(1), rs.getString(2));
+			}
+			return admins;
 
 		} catch (Exception e) {
 			return null;
@@ -380,8 +491,27 @@ public class Db {
 			return null;
 		}
 	}
+	
+	public Map<Integer, String> fetchCoursesByDepartmentId(int departmentId) {
+		try {
+			Map<Integer, String> courses = new HashMap<>();
+			// if(all)
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"SELECT course.course_id,class.class_name,subject.sub_name FROM course INNER JOIN class ON class.class_id = course.class_id INNER JOIN subject ON subject.sub_id = course.sub_id INNER JOIN department ON department.dep_id = class.dep_id WHERE department.dep_id = ?;");
+			preparedStatement.setInt(1, departmentId);
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				courses.put(rs.getInt(1), rs.getString(2) + " - " + rs.getString(3));
+			}
+			return courses;
 
-	public boolean insertAllocation(Integer teacherId, Integer courseId) {
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public Status insertAllocation(Integer teacherId, Integer courseId) {
 		try {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement("INSERT INTO allocation(teacher_id, course_id) VALUES(?,?)");
@@ -390,13 +520,14 @@ public class Db {
 			preparedStatement.setInt(2, courseId);
 
 			if (preparedStatement.executeUpdate() > 0) {
-				return true;
+				return new Status(true, "");
 			}
 
 		} catch (Exception e) {
 			System.out.println("\n" + e.getMessage());
+			return new Status(false, e.getMessage());
 		}
-		return false;
+		return new Status(false, "Something went wrong");
 	}
 
 	public Map<Integer, String> fetchSubjects() {
@@ -416,7 +547,7 @@ public class Db {
 		}
 	}
 
-	public boolean insertCourse(Integer classId, Integer subjectId) {
+	public Status insertCourse(Integer classId, Integer subjectId) {
 		try {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement("INSERT INTO course(class_id, sub_id) VALUES(?,?)");
@@ -425,16 +556,17 @@ public class Db {
 			preparedStatement.setInt(2, subjectId);
 
 			if (preparedStatement.executeUpdate() > 0) {
-				return true;
+				return new Status(true, "");
 			}
 
 		} catch (Exception e) {
 			System.out.println("\n" + e.getMessage());
+			return new Status(false, e.getMessage());
 		}
-		return false;
+		return new Status(false, "Something went wrong");
 	}
 
-	public boolean insertEntity(String entity, String name, Integer departmentId, Integer total) {
+	public Status insertEntity(String entity, String name, Integer departmentId, Integer total) {
 		try {
 			PreparedStatement preparedStatement;
 
@@ -460,13 +592,39 @@ public class Db {
 			}
 
 			if (preparedStatement.executeUpdate() > 0) {
-				return true;
+				return new Status(true, "");
 			}
 
 		} catch (Exception e) {
 			System.out.println("\n" + e.getMessage());
+			return new Status(false, e.getMessage());
 		}
-		return false;
+		return new Status(false, "Something went wrong");
+	}
+	
+	public List<Allocation> fetachAllAllocations() {
+
+		List<Allocation> allocations = new ArrayList<>();
+		PreparedStatement preparedStatement;
+
+		try {
+			preparedStatement = connection.prepareStatement(
+					"SELECT allocation.alloc_id ,course.course_id,teacher.teacher_id,teacher.name,department.dep_name,class.class_id ,class.class_name ,subject.sub_id,subject.sub_name FROM allocation\n"
+					+ "INNER JOIN teacher ON teacher.teacher_id = allocation.teacher_id\n"
+					+ "INNER JOIN department ON teacher.dep_id = department.dep_id \n"
+					+ "INNER JOIN course ON course.course_id = allocation.course_id \n"
+					+ "INNER JOIN class ON class.class_id = course.class_id \n"
+					+ "INNER JOIN subject ON subject.sub_id = course.sub_id;");
+
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				allocations.add(new Allocation(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4),rs.getString(5),rs.getInt(6), rs.getString(7), rs.getInt(8), rs.getString(9)));
+			}
+			return allocations;
+
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }

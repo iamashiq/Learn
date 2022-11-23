@@ -25,12 +25,20 @@ public class SubmitAllocationAction extends Action {
 
 		System.out.println(teacherId + " " + courseId );
 
-		if (Db.getInstance().insertAllocation(teacherId, courseId)) {
-			System.out.println("Success Admin Print");
+		Status result = Db.getInstance().insertAllocation(teacherId, courseId);
+
+		if (result.status()) {
+			System.out.println("Success Print");
 			return mapping.findForward("success");
 		}
+		else
+		{
+			System.out.println("Error Print "+result.message());
+			request.setAttribute("error_message", result.message());
+			return mapping.findForward("failed");
+			
+		}
 
-		return mapping.findForward("failed");
 
 	}
 

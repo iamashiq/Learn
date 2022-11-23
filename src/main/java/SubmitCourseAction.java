@@ -25,13 +25,21 @@ public class SubmitCourseAction extends Action {
 		subjectId = Integer.parseInt(request.getParameter("subjectId"));
 
 		System.out.println(classId + " " + subjectId );
+		
+		Status result = Db.getInstance().insertCourse(classId, subjectId);
 
-		if (Db.getInstance().insertCourse(classId, subjectId)) {
-			System.out.println("Success AddCourse Print");
+		if (result.status()) {
+			System.out.println("Success Print");
 			return mapping.findForward("success");
 		}
+		else
+		{
+			System.out.println("Error Print "+result.message());
+			request.setAttribute("error_message", result.message());
+			return mapping.findForward("failed");
+			
+		}
 
-		return mapping.findForward("failed");
 
 	}
 

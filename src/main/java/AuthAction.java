@@ -29,17 +29,19 @@ public class AuthAction extends Action {
 
 			HttpSession session = request.getSession();
 			session.setAttribute("id", login.id());
-			session.setAttribute("role", login.role());
+			session.setAttribute("role", login.roleId());
 			
-			if(session.getAttribute("role").equals("1"))
+			System.out.println("Role is "+session.getAttribute("role"));
+			
+			if((Integer)session.getAttribute("role") == 1)
 			{
 				return mapping.findForward("student");
 			}
-			else if(session.getAttribute("role").equals("2"))
+			else if((Integer)session.getAttribute("role") == 2)
 			{
 				return mapping.findForward("teacher");
 			}
-			else if(session.getAttribute("role").equals("3"))
+			else if((Integer)session.getAttribute("role") == 3)
 			{
 				return mapping.findForward("admin");
 			}

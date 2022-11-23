@@ -9,8 +9,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import beans.Allocation;
+import beans.TeacherAllocation;
 import beans.StudentMark;
+import beans.Status;
 import beans.Student;
 import beans.Teacher;
 import beans.TeacherMark;
@@ -33,13 +34,27 @@ public class SubmitMarkAction extends Action {
 		
 		System.out.println(courseId + " "+studentId + " "+score);
 		
-		if(Db.getInstance().insertMark(new TeacherMark(studentId, courseId, score)))
+		Status validationStatus;
+		if(! ( validationStatus = ServerValidation.getInstance().vaildateInt(score+"")).status())
 		{
-			return mapping.findForward("success");	
+			request.setAttribute("error_message", validationStatus.message());
+			return mapping.findForward("failed");
+			
+		}
+		
+		
+		Status result = Db.getInstance().insertMark(new TeacherMark(studentId, courseId, score));
+
+		if (result.status()) {
+			System.out.println("Success Print");
+			return mapping.findForward("success");
 		}
 		else
 		{
-			return mapping.findForward("failed");	
+			System.out.println("Error Print "+result.message());
+			request.setAttribute("error_message", result.message());
+			return mapping.findForward("failed");
+			
 		}
 
 

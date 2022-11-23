@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-public class SessionFilter extends HttpFilter implements Filter {
+public class StudentAuthFilter extends HttpFilter implements Filter {
        
     
 	public void destroy() {
@@ -25,17 +25,18 @@ public class SessionFilter extends HttpFilter implements Filter {
 	protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
-		System.out.println("SessionFilter working");
 		
-		if(request.getSession().getAttribute("id") == null)
+		System.out.println("Student Filter working");
+		
+		if( request.getSession().getAttribute("role") != null &&  (Integer) request.getSession().getAttribute("role") == 1)
 		{
-			System.out.println("SessionFilter : pass");
+			System.out.println("Filter : pass");
 			chain.doFilter(request, response);
 		}
 		else
 		{
-			System.out.println("SessionFilter : fail");
-			response.sendRedirect("/Learn/admin.do");
+			System.out.println("Filter : fail");
+			response.sendRedirect(request.getContextPath()+"/logout.do");
 		}
 	}
 

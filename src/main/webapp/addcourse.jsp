@@ -46,7 +46,8 @@ html, body {
 				<li class="nav-item"><a class="nav-link" href="admin.do">Home</a></li>
 				<li class="nav-item"><a class="nav-link" href="adduser.do">New User</a></li>
 				<li class="nav-item"><a class="nav-link" href="allocate.do">New Allocation</a></li>
-				<li class="nav-item active"><a class="nav-link" href="addsubject.do">New subject</a></li>
+				<li class="nav-item active"><a class="nav-link" href="addcourse.do">New Course</a></li>
+				<li class="nav-item"><a class="nav-link" href="addentity.do">New Entity</a></li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
 			</ul>
@@ -64,6 +65,66 @@ html, body {
 	<form action="submitcourse.do" method="POST">
 	
 	<div class="container">
+	
+	
+		<div  id="subjectsTable">
+
+			<div class="row mt-5">
+				<div class="col">
+
+					<h3>
+						<span class="badge badge-secondary">Existing Courses</span>
+					</h3>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Class - Subject</th>
+							</tr>
+						</thead>
+						<tbody>
+
+
+							<%
+							try {
+								Map<Integer, String> courses;
+								courses = (Map<Integer, String>) request.getAttribute("courses");
+
+								if (courses.size() > 0) {
+
+									for (Map.Entry<Integer, String> crs : courses.entrySet()) {
+
+								pageContext.setAttribute("crs_id", crs.getKey());
+								pageContext.setAttribute("crs_name", crs.getValue());
+							%>
+
+							<tr>
+								<td><c:out value="${crs_id}" /></td>
+								<td><c:out value="${crs_name}" /></td>
+							<tr />
+
+							<%
+							}
+
+							}
+							} catch (Exception e) {
+							System.out.print(e.getMessage());
+							}
+							%>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+			</div>
+	
+	<hr/>
+	
 		<div class="row mt-5">
 			<div class="col">
 				<h3>

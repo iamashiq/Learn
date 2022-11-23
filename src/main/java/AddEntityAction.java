@@ -13,7 +13,8 @@ import javax.servlet.http.HttpSession;
 public class AddEntityAction extends Action {
 	
 
-	Map<Integer,String> departments;
+	Map<Integer,String> departments,subjects;
+	Map<Integer,String> classes;
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
@@ -21,7 +22,11 @@ public class AddEntityAction extends Action {
 
 
 		departments = Db.getInstance().fetchDepartments();
+		classes = Db.getInstance().fetchClasses();
+		subjects = Db.getInstance().fetchSubjects();
 		request.setAttribute("departments", departments);
+		request.setAttribute("classes", classes);
+		request.setAttribute("subjects", subjects);
 		
 		return mapping.findForward("load");
 
