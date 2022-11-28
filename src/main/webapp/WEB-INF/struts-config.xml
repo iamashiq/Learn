@@ -35,10 +35,10 @@
 			<forward name="load" path="/addmark.jsp"></forward>
 		</action>
 
-		<action path="/getStudentsByClassId" type="StudentsByClassId"></action>
+		<action path="/getFilteredStudents" type="FilteredStudents"></action>
 
 		<action path="/submitmark" type="SubmitMarkAction">
-			<forward name="success" path="/success.do" redirect="true"></forward>
+			<forward name="success" path="/success.do"></forward>
 			<forward name="failed" path="/error.do"></forward>
 		</action>
 
@@ -61,7 +61,7 @@
 			<forward name="load" path="/allocate.jsp"></forward>
 		</action>
 		
-		<action path="/getCoursesByDepartmentId" type="CoursesByDepartmentId"></action>
+		<action path="/getFilteredCourses" type="FilteredCourses"></action>
 		
 		<action path="/submitallocation" type="SubmitAllocationAction">
 			<forward name="success" path="/success.do" redirect="true"></forward>
@@ -71,6 +71,9 @@
 		<action path="/addcourse" type="AddCourseAction">
 			<forward name="load" path="/addcourse.jsp"></forward>
 		</action>
+		
+		
+		<action path="/getFilteredSubjects" type="FilteredSubjects"></action>
 		
 		<action path="/submitcourse" type="SubmitCourseAction">
 			<forward name="success" path="/success.do" redirect="true"></forward>

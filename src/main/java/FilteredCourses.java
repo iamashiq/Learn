@@ -19,27 +19,28 @@ import com.google.gson.Gson;
 
 
 
-public class StudentsByClassId extends Action {
+public class FilteredCourses extends Action {
 	
 
-	Map<Integer,String> students;
-	String classId;
+	Map<Integer,String> courses;
+	String departmentId,teacherId;
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
-		classId  = request.getParameter("classId");
+		departmentId  = request.getParameter("departmentId");		
+		teacherId  = request.getParameter("teacherId");
 		String jsonString="";
 		
-		if((students = Db.getInstance().fetchStudentsByClassId(Integer.parseInt(classId))).size() > 0)
+		if( (courses = Db.getInstance().fetchFilteredCourses(Integer.parseInt(departmentId),Integer.parseInt(teacherId))).size() > 0 )
 		{
 //			for(Map.Entry<Integer, String> entry : students.entrySet())
 //			{
 //				System.out.println(entry.getKey()+" - "+entry.getValue());
 //			}
 
-			jsonString = new Gson().toJson(students);
+			jsonString = new Gson().toJson(courses);
 			System.out.println("JSON : "+ jsonString);
 		}
 		

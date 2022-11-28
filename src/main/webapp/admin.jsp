@@ -58,10 +58,14 @@ html, body {
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active"><a class="nav-link" href="admin.do">Home</a></li>
-				<li class="nav-item"><a class="nav-link" href="adduser.do">New User</a></li>
-				<li class="nav-item"><a class="nav-link" href="allocate.do">New Allocation</a></li>
-				<li class="nav-item"><a class="nav-link" href="addcourse.do">New Course</a></li>
-				<li class="nav-item"><a class="nav-link" href="addentity.do">New Entity</a></li>
+				<li class="nav-item"><a class="nav-link" href="adduser.do">New
+						User</a></li>
+				<li class="nav-item"><a class="nav-link" href="allocate.do">New
+						Allocation</a></li>
+				<li class="nav-item"><a class="nav-link" href="addcourse.do">New
+						Course</a></li>
+				<li class="nav-item"><a class="nav-link" href="addentity.do">New
+						Entity</a></li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
 			</ul>
@@ -118,116 +122,203 @@ html, body {
 				</table>
 			</div>
 		</div>
-	
-	
-	
+		
+		<hr/>
+
 		<div class="row mt-5">
 			<div class="col">
 				<h3>
-					<span class="badge badge-secondary">Users</span>
+					<span class="badge badge-secondary">Students</span>
 				</h3>
 			</div>
 		</div>
-	
-	
+
+
 		<div class="row">
 			<div class="col">
 				<table class="table">
 					<thead>
 						<tr>
+							<th scope="col">#</th>
 							<th scope="col">ID</th>
-							<th scope="col">Role</th>
-							<th scope="col">Details</th>
+							<th scope="col">Name</th>
+							<th scope="col">Class</th>
+							<th scope="col">Department</th>
 						</tr>
 					</thead>
 					<tbody>
-					
-							<%
-							try {
-								Map<Integer, String> students;
-								students = (Map<Integer, String>) request.getAttribute("students");
 
-								if (students.size() > 0) {
+						<%
+						try {
+							Map<Integer, String> students;
+							students = (Map<Integer, String>) request.getAttribute("students");
 
-									for (Map.Entry<Integer, String> stud : students.entrySet()) {
+							if (students.size() > 0) {
 
-								pageContext.setAttribute("stud_id", stud.getKey());
-								pageContext.setAttribute("stud_name", stud.getValue());
-							%>
+							int index = 1;
+							for (Map.Entry<Integer, String> stud : students.entrySet()) {
+								
+							String[] temp = stud.getValue().split(",");
 
-							<tr>
-								<td><c:out value="${stud_id}" /></td>
-								<td>Student</td>
-								<td><c:out value="${stud_name}" /></td>
-							<tr/>
+							pageContext.setAttribute("stud_index", index);
+							pageContext.setAttribute("stud_id", stud.getKey());
+							pageContext.setAttribute("stud_name", temp[0]);
+							pageContext.setAttribute("stud_class", temp[1]);
+							pageContext.setAttribute("stud_dep", temp[2]);
+						%>
 
-							<%
-							}
+						<tr>
+							<td><c:out value="${stud_index}" /></td>
+							<td><c:out value="${stud_id}" /></td>
+							<td><c:out value="${stud_name}" /></td>
+							<td><c:out value="${stud_class}" /></td>
+							<td><c:out value="${stud_dep}" /></td>
+						<tr />
 
-							}
-							} catch (Exception e) {
-							System.out.print(e.getMessage());
-							}
-						
-							try {
-								Map<Integer, String> teachers;
-								teachers = (Map<Integer, String>) request.getAttribute("teachers");
+						<%
+						index++;
+						}
 
-								if (teachers.size() > 0) {
+						}
+						} catch (Exception e) {
+						System.out.print(e.getMessage());
+						}
+						%>
 
-									for (Map.Entry<Integer, String> tcr : teachers.entrySet()) {
 
-								pageContext.setAttribute("tcr_id", tcr.getKey());
-								pageContext.setAttribute("tcr_name", tcr.getValue());
-							%>
 
-							<tr>
-								<td><c:out value="${tcr_id}" /></td>
-								<td>Teacher</td>
-								<td><c:out value="${tcr_name}" /></td>
-							<tr/>
-
-							<%
-							}
-
-							}
-							} catch (Exception e) {
-							System.out.print(e.getMessage());
-							}
-							
-							
-							try {
-								Map<Integer, String> admins;
-								admins = (Map<Integer, String>) request.getAttribute("admins");
-
-								if (admins.size() > 0) {
-
-									for (Map.Entry<Integer, String> adm : admins.entrySet()) {
-
-								pageContext.setAttribute("adm_id", adm.getKey());
-								pageContext.setAttribute("adm_name", adm.getValue());
-							%>
-
-							<tr>
-								<td><c:out value="${adm_id}" /></td>
-								<td>Admin</td>
-								<td><c:out value="${adm_name}" /></td>
-							<tr />
-
-							<%
-							}
-
-							}
-							} catch (Exception e) {
-							System.out.print(e.getMessage());
-							}
-							%>
-						
 
 					</tbody>
 				</table>
 			</div>
 		</div>
+
+
+		<div class="row mt-5">
+			<div class="col">
+				<h3>
+					<span class="badge badge-secondary">Teachers</span>
+				</h3>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">ID</th>
+							<th scope="col">Name</th>
+							<th scope="col">Department</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%
+						try {
+							Map<Integer, String> teachers;
+							teachers = (Map<Integer, String>) request.getAttribute("teachers");
+
+							if (teachers.size() > 0) {
+							
+							int index = 1;
+							for (Map.Entry<Integer, String> tcr : teachers.entrySet()) {
+								
+							String[] temp = tcr.getValue().split(" - ");
+
+							pageContext.setAttribute("tcr_index", index);
+							pageContext.setAttribute("tcr_id", tcr.getKey());
+							pageContext.setAttribute("tcr_name", temp[0]);
+							pageContext.setAttribute("tcr_dep", temp[1]);
+						%>
+
+						<tr>
+							<td><c:out value="${tcr_index}" /></td>
+							<td><c:out value="${tcr_id}" /></td>
+							<td><c:out value="${tcr_name}" /></td>
+							<td><c:out value="${tcr_dep}" /></td>
+						<tr />
+
+						<%
+						index++;
+						}
+
+						}
+						} catch (Exception e) {
+						System.out.print(e.getMessage());
+						}
+						%>
+
+
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+
+
+		<div class="row mt-5">
+			<div class="col">
+				<h3>
+					<span class="badge badge-secondary">Admins</span>
+				</h3>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">ID</th>
+							<th scope="col">Name</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<%
+						try {
+							Map<Integer, String> admins;
+							admins = (Map<Integer, String>) request.getAttribute("admins");
+
+							if (admins.size() > 0) {
+								int index = 1;
+
+								for (Map.Entry<Integer, String> adm : admins.entrySet()) {
+
+							pageContext.setAttribute("adm_index", index);
+							pageContext.setAttribute("adm_id", adm.getKey());
+							pageContext.setAttribute("adm_name", adm.getValue());
+						%>
+
+						<tr>
+							<td><c:out value="${adm_index}" /></td>
+							<td><c:out value="${adm_id}" /></td>
+							<td><c:out value="${adm_name}" /></td>
+						<tr />
+
+						<%
+						index++;
+						}
+
+						}
+						} catch (Exception e) {
+						System.out.print(e.getMessage());
+						}
+						%>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+
+
+
+
 	</div>
 
 </body>

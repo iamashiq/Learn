@@ -30,7 +30,6 @@ html, body {
 <body>
 
 	<%
-	
 
 		Student student;
 		List<StudentMark> marks;
@@ -50,6 +49,7 @@ html, body {
 			System.out.print(e.getMessage());
 		}
 	%>
+	
 
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">

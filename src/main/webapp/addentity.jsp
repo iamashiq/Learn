@@ -205,6 +205,7 @@ html, body {
 							<tr>
 								<th scope="col">ID</th>
 								<th scope="col">Name</th>
+								<th scope="col">Department</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -217,15 +218,19 @@ html, body {
 
 								if (classes.size() > 0) {
 
-									for (Map.Entry<Integer, String> cls : classes.entrySet()) {
+								for (Map.Entry<Integer, String> cls : classes.entrySet()) {
+									
+								String[] temp = cls.getValue().split(",");
 
 								pageContext.setAttribute("cls_id", cls.getKey());
-								pageContext.setAttribute("cls_name", cls.getValue());
+								pageContext.setAttribute("cls_name", temp[0]);
+								pageContext.setAttribute("cls_dname", temp[1]);
 							%>
 
 							<tr>
 								<td><c:out value="${cls_id}" /></td>
 								<td><c:out value="${cls_name}" /></td>
+								<td><c:out value="${cls_dname}" /></td>
 							<tr />
 
 							<%
@@ -336,7 +341,7 @@ html, body {
 
 								if (departments.size() > 0) {
 
-									for (Map.Entry<Integer, String> d : departments.entrySet()) {
+								for (Map.Entry<Integer, String> d : departments.entrySet()) {
 								pageContext.setAttribute("row_did", d.getKey());
 								pageContext.setAttribute("row_dname", d.getValue());
 								System.out.println(d.getKey() + " X");
@@ -369,7 +374,7 @@ html, body {
 
 					<!-- Submit button -->
 					<button type="submit" id="submitButton"
-						class="btn btn-info btn-block mt-4">Add User</button>
+						class="btn btn-secondary btn-block mt-4">Add User</button>
 				</form>
 			</div>
 		</div>

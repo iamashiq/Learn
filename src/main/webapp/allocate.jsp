@@ -29,7 +29,7 @@ html, body {
 <script type="text/javascript">
 function teacherSelected()
 {
-	
+	document.getElementById("courseSelect").innerHTML = "";;
 	var temp = document.getElementById("teacherSelect").value.split(",");
 	selectedTeacherId = temp[0];
 	selectedDepartmentId = temp[1];
@@ -46,8 +46,6 @@ function teacherSelected()
 
 			var courseSelect = document.getElementById("courseSelect");
 			
-			courseSelect.innerHTML = "";
-			
 			for ( var key in courses) {
 
 				var opt = document.createElement('option');
@@ -58,7 +56,7 @@ function teacherSelected()
 
 		}
 	};
-	xhttp.open("GET", "getCoursesByDepartmentId.do?departmentId="+selectedDepartmentId, true);
+	xhttp.open("GET", "getFilteredCourses.do?departmentId="+selectedDepartmentId+"&teacherId="+selectedTeacherId, true);
 	xhttp.send();
 	
 }
@@ -120,6 +118,7 @@ function teacherSelected()
 				<table class="table">
 					<thead>
 						<tr>
+							<th scope="col">#</th>
 							<th scope="col">ID</th>
 							<th scope="col" colspan="2">Teacher</th>
 							<th scope="col" colspan="2">Course</th>
@@ -127,6 +126,7 @@ function teacherSelected()
 					</thead>
 					<thead>
 						<tr>
+							<th scope="col"></th>
 							<th scope="col"></th>
 							<th scope="col">Name</th>
 							<th scope="col">Department</th>
@@ -145,9 +145,10 @@ function teacherSelected()
 
 							if(allocations.size()>0)
 							{
-								
+							int index =1;	
 							for (Allocation alloc : allocations) {
 
+								pageContext.setAttribute("alloc_index", index);
 								pageContext.setAttribute("alloc_id", alloc.allocId());
 								pageContext.setAttribute("alloc_teacher", alloc.teahcherName());
 								pageContext.setAttribute("alloc_dept", alloc.departmentName());
@@ -156,6 +157,7 @@ function teacherSelected()
 						%>
 																					
 						<tr>
+							<td><c:out value="${alloc_index}" /></td>
 							<td><c:out value="${alloc_id}" /></td>
 							<td><c:out value="${alloc_teacher}" /></td>
 							<td><c:out value="${alloc_dept}" /></td>
@@ -164,6 +166,7 @@ function teacherSelected()
 						<tr />
 
 						<%
+						index++;
 						}
 
 						}

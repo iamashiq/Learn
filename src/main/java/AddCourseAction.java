@@ -20,12 +20,10 @@ public class AddCourseAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		classes = Db.getInstance().fetchClasses();
-		subjects = Db.getInstance().fetchSubjects();
+		classes = Db.getInstance().fetchClasseswithDepartments();
 		courses = Db.getInstance().fetchCourses();
 		
 		request.setAttribute("classes", classes);
-		request.setAttribute("subjects", subjects);
 		request.setAttribute("courses", courses);
 
 		return mapping.findForward("load");

@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
+<%@page import="beans.*"%>
 <head>
 <title>Learn - Login</title>
 <meta charset="UTF-8">
@@ -46,17 +47,9 @@ html, body {
 				<button type="submit" class="btn btn-primary btn-block mb-4">Sign
 					in</button>
 
-				<!-- Register buttons -->
-				<div class="text-center">
-					<p>
-						Not a member? <a href="register.do">Register</a>
-					</p>
-
-				</div>
 			</form>
 		</div>
 	</div>
-
 
 </body>
 </html>

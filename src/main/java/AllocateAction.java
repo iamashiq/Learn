@@ -19,7 +19,6 @@ public class AllocateAction extends Action {
 
 
 	Map<String,String> teachers;
-	Map<Integer,String> courses;
 	List<Allocation> allocations;
 	
 	@Override
@@ -28,9 +27,7 @@ public class AllocateAction extends Action {
 
 		
 		teachers = Db.getInstance().fetchTeachersWithDepartmentId();
-		courses = Db.getInstance().fetchCourses();
 		allocations = Db.getInstance().fetachAllAllocations();
-		request.setAttribute("courses", courses);
 		request.setAttribute("teachers", teachers);
 		request.setAttribute("allocations", allocations);
 

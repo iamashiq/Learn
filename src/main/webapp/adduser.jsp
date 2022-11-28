@@ -355,7 +355,7 @@ html, body {
 
 					<!-- Submit button -->
 					<button type="submit" id="submitButton"
-						class="btn btn-info btn-block mt-4">Add User</button>
+						class="btn btn-secondary btn-block mt-4">Add User</button>
 				</form>
 			</div>
 		</div>

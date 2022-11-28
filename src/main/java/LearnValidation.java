@@ -9,18 +9,18 @@ import org.apache.commons.*;
 
 import beans.Status;
 
-public class ServerValidation {
+public class LearnValidation {
 
-	private static ServerValidation instance;
+	private static LearnValidation instance;
 
-	private ServerValidation() {
+	private LearnValidation() {
 
 	}
 
-	public static ServerValidation getInstance() {
+	public static LearnValidation getInstance() {
 
 		if (instance == null) {
-			instance = new ServerValidation();
+			instance = new LearnValidation();
 		}
 		return instance;
 	}

@@ -15,6 +15,7 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
+	
 <style>
 .center {
 	padding: 10px;
@@ -26,7 +27,6 @@ html, body {
 }
 </style>
 <script type="text/javascript">
-
 	function validate() {
 		var score = document.getElementById("score").value;
 
@@ -45,13 +45,22 @@ html, body {
 
 	function courseSelected() {
 
+
+		document.getElementById("studentId").value = "";
+
 		var temp = document.getElementById("courseSelect").value.split(",");
 		selectedCourseId = temp[0];
 		selectedClassId = temp[1];
+		
+		var studentSelect =  document.getElementById("studentSelect");
+		studentSelect.innerHTML = "";	
+		var opt = document.createElement('option');
+		opt.disabled = true;
+		opt.selected = true;
+		opt.innerHTML = "Choose..";
+		studentSelect.appendChild(opt);
 
 		document.getElementById("courseId").value = selectedCourseId;
-
-		document.getElementById("studentSelect").removeAttribute('disabled');
 
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
@@ -59,6 +68,7 @@ html, body {
 				var students = JSON.parse(this.responseText);
 
 				var studentSelect = document.getElementById("studentSelect");
+				
 				for ( var key in students) {
 
 					var opt = document.createElement('option');
@@ -69,7 +79,7 @@ html, body {
 
 			}
 		};
-		xhttp.open("GET", "getStudentsByClassId.do?classId=" + selectedClassId,
+		xhttp.open("GET", "getFilteredStudents.do?classId=" + selectedClassId+"&courseId="+ selectedCourseId,
 				true);
 		xhttp.send();
 
@@ -80,14 +90,8 @@ html, body {
 		selectedStudentId = document.getElementById("studentSelect").value;
 		document.getElementById("studentId").value = selectedStudentId;
 
-		document.getElementById("score").removeAttribute('disabled');
-
 	}
-	function scoreEntered() {
 
-		document.getElementById("submitButton").removeAttribute('disabled');
-
-	}
 </script>
 </head>
 <body>
@@ -124,9 +128,16 @@ html, body {
 
 
 	<div class="container">
+
 		<div class="row mt-5">
+			<h3>
+				<span class="badge badge-secondary">Enter Marks</span>
+			</h3>
+		</div>
+
+		<div class="row mt-3">
 			<div class="col">
-				<div class="input-group mb-3">
+				<div class="input-group mb-5">
 					<div class="input-group-prepend">
 						<label class="input-group-text" for="courseSelect">Course</label>
 					</div>
@@ -162,15 +173,16 @@ html, body {
 		</div>
 
 
-		<div class="row mt-5">
+		<div class="row">
 			<div class="col">
-				<div class="input-group mb-3">
+				<div class="input-group mb-5">
 					<div class="input-group-prepend">
 						<label class="input-group-text" for="studentSelect">Student</label>
 					</div>
 					<select class="custom-select" id="studentSelect"
-						onchange="studentSelected()" disabled>
-						<option selected>Choose...</option>
+						onchange="studentSelected()" required>
+						
+						<option disabled selected>Choose..</option>
 
 
 					</select>
@@ -183,32 +195,31 @@ html, body {
 			onsubmit="return validate()">
 
 
-			<input type="text" id="studentId" name="studentId" hidden> <input
-				type="text" id="courseId" name="courseId" hidden>
+			<input type="text" id="studentId" name="studentId" required hidden>
+			 <input	type="text" id="courseId" name="courseId" required hidden>
 
 
 
-			<div class="row mt-5">
+			<div class="row">
 				<div class="col">
-					<div class="input-group mb-3">
+					<div class="input-group mb-5">
 						<div class="input-group-prepend">
 							<span class="input-group-text" id="basic-addon1">Score</span>
 						</div>
 						<input type="number" class="form-control" placeholder="Score"
 							id="score" aria-label="score" name="score"
-							aria-describedby="basic-addon1" onchange="scoreEntered()"
-							disabled>
+							aria-describedby="basic-addon1" required>
 					</div>
 				</div>
 			</div>
 
 
 
-			<div class="row mt-5">
+			<div class="row">
 				<div class="col">
-					<div class="input-group mb-3">
+					<div class="input-group mb-5">
 						<input type="submit" class="form-control" id="submitButton"
-							aria-label="score" aria-describedby="basic-addon1" disabled>
+							aria-label="score" aria-describedby="basic-addon1">
 					</div>
 				</div>
 			</div>

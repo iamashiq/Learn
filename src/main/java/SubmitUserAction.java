@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import beans.*;
+import java.security.*;
 
 public class SubmitUserAction extends Action {
 
@@ -45,25 +47,25 @@ public class SubmitUserAction extends Action {
 		
 		//Validations
 		Status validationStatus;
-		if(! ( validationStatus = ServerValidation.getInstance().vaildateMail(email)).status())
+		if(! ( validationStatus = LearnValidation.getInstance().vaildateMail(email)).status())
 		{
 			request.setAttribute("error_message", validationStatus.message());
 			return mapping.findForward("failed");
 			
 		}
-		else if(! ( validationStatus = ServerValidation.getInstance().vaildatePhone(phone)).status())
+		else if(! ( validationStatus = LearnValidation.getInstance().vaildatePhone(phone)).status())
 		{
 			request.setAttribute("error_message", validationStatus.message());
 			return mapping.findForward("failed");
 			
 		}
-		else if(! ( validationStatus = ServerValidation.getInstance().vaildateCleanText(username)).status())
+		else if(! ( validationStatus = LearnValidation.getInstance().vaildateCleanText(username)).status())
 		{
 			request.setAttribute("error_message", validationStatus.message());
 			return mapping.findForward("failed");
 			
 		} 
-		else if(! ( validationStatus = ServerValidation.getInstance().vaildatePassword(password)).status())
+		else if(! ( validationStatus = LearnValidation.getInstance().vaildatePassword(password)).status())
 		{
 			request.setAttribute("error_message", validationStatus.message());
 			return mapping.findForward("failed");
@@ -71,7 +73,7 @@ public class SubmitUserAction extends Action {
 		}
 		if(roleId == 1)
 		{
-			if (! ( validationStatus = ServerValidation.getInstance().isBeforeToday(dob)).status())
+			if (! ( validationStatus = LearnValidation.getInstance().isBeforeToday(dob)).status())
 			{
 				request.setAttribute("error_message", validationStatus.message());
 				return mapping.findForward("failed");
@@ -81,7 +83,7 @@ public class SubmitUserAction extends Action {
 		}
 		if(roleId == 2)
 		{
-			if (! ( validationStatus = ServerValidation.getInstance().isBeforeToday(joindate)).status())
+			if (! ( validationStatus = LearnValidation.getInstance().isBeforeToday(joindate)).status())
 			{
 				request.setAttribute("error_message", validationStatus.message());
 				return mapping.findForward("failed");
@@ -91,7 +93,9 @@ public class SubmitUserAction extends Action {
 		}
 		
 		
-		
+
+		password = Db.getInstance().getMD5Hash(password) ;
+		System.out.println("Password HAsh is : "+password);
 		
 		
 		//Add Login

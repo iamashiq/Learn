@@ -18,8 +18,19 @@ public class AuthAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
+		
+		
 		String username = request.getParameter("username");
+		
 		String password = request.getParameter("password");
+		
+		if(username == null || password == null)
+		{
+			return mapping.findForward("failed");	
+		}
+		
+		password = Db.getInstance().getMD5Hash(password);
+		
 		
 		Login login;
 		

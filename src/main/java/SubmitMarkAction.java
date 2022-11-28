@@ -35,7 +35,7 @@ public class SubmitMarkAction extends Action {
 		System.out.println(courseId + " "+studentId + " "+score);
 		
 		Status validationStatus;
-		if(! ( validationStatus = ServerValidation.getInstance().vaildateInt(score+"")).status())
+		if(! ( validationStatus = LearnValidation.getInstance().vaildateInt(score+"")).status())
 		{
 			request.setAttribute("error_message", validationStatus.message());
 			return mapping.findForward("failed");

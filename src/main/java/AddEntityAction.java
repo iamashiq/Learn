@@ -22,7 +22,7 @@ public class AddEntityAction extends Action {
 
 
 		departments = Db.getInstance().fetchDepartments();
-		classes = Db.getInstance().fetchClasses();
+		classes = Db.getInstance().fetchClasseswithDepartments();
 		subjects = Db.getInstance().fetchSubjects();
 		request.setAttribute("departments", departments);
 		request.setAttribute("classes", classes);

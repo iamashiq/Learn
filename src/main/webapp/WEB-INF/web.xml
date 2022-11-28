@@ -15,6 +15,13 @@
 		<filter-name>StudentAuthFilter</filter-name>
 		<url-pattern>/student.do</url-pattern>
 	</filter-mapping>
+	
+	
+	<filter-mapping>
+		<filter-name>StudentAuthFilter</filter-name>
+		<url-pattern>/student.jsp</url-pattern>
+	</filter-mapping>
+	
 
 	<filter>
 		<filter-name>TeacherAuthFilter</filter-name>
@@ -25,6 +32,12 @@
 		<filter-name>TeacherAuthFilter</filter-name>
 		<url-pattern>/teacher.do</url-pattern>
 	</filter-mapping>
+
+
+	<filter-mapping>
+		<filter-name>TeacherAuthFilter</filter-name>
+		<url-pattern>/teacher.jsp</url-pattern>
+	</filter-mapping>
 	
 	<filter-mapping>
 		<filter-name>TeacherAuthFilter</filter-name>
@@ -33,7 +46,7 @@
 		
 	<filter-mapping>
 		<filter-name>TeacherAuthFilter</filter-name>
-		<url-pattern>/getStudentsByClassId.do</url-pattern>
+		<url-pattern>/getFilteredStudents.do</url-pattern>
 	</filter-mapping>
 	
 	<filter-mapping>
@@ -70,7 +83,7 @@
 	
 	<filter-mapping>
 		<filter-name>AdminAuthFilter</filter-name>
-		<url-pattern>/getCoursesByDepartmentId.do</url-pattern>
+		<url-pattern>/getFilteredCourses.do</url-pattern>
 	</filter-mapping>
 	
 	

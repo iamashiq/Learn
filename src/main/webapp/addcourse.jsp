@@ -26,6 +26,38 @@ html, body {
 }
 </style>
 
+<script type="text/javascript">
+function classSelected()
+{
+	document.getElementById("subjectSelect").innerHTML = "";
+	selectedClassId = document.getElementById("classSelect").value;
+
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			
+			var subjects = JSON.parse(this.responseText);
+
+			var subjectSelect = document.getElementById("subjectSelect");
+			
+			for ( var key in subjects) {
+
+				var opt = document.createElement('option');
+				opt.value = key;
+				opt.innerHTML = subjects[key];
+				subjectSelect.appendChild(opt);
+			}
+
+		}
+	};
+	xhttp.open("GET", "getFilteredSubjects.do?classId="+selectedClassId, true);
+	xhttp.send();
+	
+}
+
+</script>
+
 </head>
 <body>
 
@@ -83,6 +115,7 @@ html, body {
 					<table class="table">
 						<thead>
 							<tr>
+								<th scope="col">#</th>
 								<th scope="col">ID</th>
 								<th scope="col">Class - Subject</th>
 							</tr>
@@ -96,19 +129,23 @@ html, body {
 								courses = (Map<Integer, String>) request.getAttribute("courses");
 
 								if (courses.size() > 0) {
+									int index =1;
 
 									for (Map.Entry<Integer, String> crs : courses.entrySet()) {
 
+								pageContext.setAttribute("crs_index", index);
 								pageContext.setAttribute("crs_id", crs.getKey());
 								pageContext.setAttribute("crs_name", crs.getValue());
 							%>
 
 							<tr>
+								<td><c:out value="${crs_index}" /></td>
 								<td><c:out value="${crs_id}" /></td>
 								<td><c:out value="${crs_name}" /></td>
 							<tr />
 
 							<%
+							index++;
 							}
 
 							}
@@ -138,7 +175,7 @@ html, body {
 					<div class="input-group-prepend">
 					<label class="input-group-text" for="classSelect">Class</label>
 					</div>
-					<select class="custom-select" id="classSelect" name="classId">
+					<select class="custom-select" id="classSelect" name="classId" onchange="classSelected()">
 						<option selected>Choose...</option>
 						
 						<%
@@ -180,34 +217,6 @@ html, body {
 					</div>
 					<select class="custom-select" id="subjectSelect" name="subjectId">
 						<option selected>Choose...</option>
-						
-					<%
-						try
-						{
-						Map<Integer, String> subjects = (Map<Integer, String>) request.getAttribute("subjects");
-
-						if (subjects.size() > 0)
-						{
-
-							for (Map.Entry<Integer, String> sub : subjects.entrySet()) 
-							{
-								System.out.println(sub.getKey()+" "+sub.getValue());
-							pageContext.setAttribute("row_subid", sub.getKey());
-							pageContext.setAttribute("row_subname", sub.getValue());
-						%>
-
-						<option value="<c:out value="${row_subid}" />"><c:out value="${row_subname}" />
-						</option>
-
-
-						<%
-							}
-
-						}
-						} catch (Exception e) {
-						System.out.print(e.getMessage());
-						}
-						%>	
 					</select>
 				</div>
 			
