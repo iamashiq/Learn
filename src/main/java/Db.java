@@ -22,7 +22,7 @@ import beans.Student;
 import beans.Teacher;
 import beans.TeacherMark;
 
-
+//DB Operation singleton class
 public class Db {
 
 	private static Db instance;
